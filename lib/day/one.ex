@@ -23,11 +23,7 @@ defmodule Advent.Day.One do
     425841692590199
   """
   @spec determine_fuel_need(integer) :: integer
-  def determine_fuel_need(mass) when is_integer(mass) do
-    mass
-    |> div(3)
-    |> (&(&1 - 2)).()
-  end
+  def determine_fuel_need(mass) when is_integer(mass), do: div(mass, 3) - 2
   @spec determine_fuel_need([integer]) :: integer
   def determine_fuel_need(list_of_masses) when is_list(list_of_masses) do
     list_of_masses
