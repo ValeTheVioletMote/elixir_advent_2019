@@ -3,7 +3,7 @@ defmodule Advent.Day.Two do
  @doc """
  Takes a program as a list of integer opcodes and values.
 
- 1 is an instruction to add together the values pointed by the next two instructions and override this sum at the position given by the third instruction.
+ 1 is an instruction to add together the values pointed by the next two instructions and override this sum at the address given by the third instruction.
 
  2 is as 1, but with multiplication.
 
