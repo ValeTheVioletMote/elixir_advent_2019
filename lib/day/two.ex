@@ -43,4 +43,11 @@ defmodule Advent.Day.Two do
     ))
  end
 
+ @d2data File.read!("data/daytwo")
+        |> String.split(",")
+        |> Enum.map(fn str -> with {n, _} <- Integer.parse(str), do: n end)
+
+ @spec get_answer(part :: number) :: String.t
+ def get_answer(part \\ 1)
+ def get_answer(1), do: @d2data |> List.replace_at(1, 12) |> List.replace_at(2, 2) |> process_program |> Enum.at(0)
 end
