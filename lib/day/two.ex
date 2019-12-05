@@ -47,6 +47,11 @@ defmodule Advent.Day.Two do
         |> String.split(",")
         |> Enum.map(fn str -> with {n, _} <- Integer.parse(str), do: n end)
 
+ @doc """
+ Determines the answers to the Advent Parts.
+  iex> get_answer(1)
+  3895705
+ """
  @spec get_answer(part :: number) :: String.t
  def get_answer(part \\ 1)
  def get_answer(1), do: @d2data |> List.replace_at(1, 12) |> List.replace_at(2, 2) |> process_program |> Enum.at(0)
