@@ -54,5 +54,24 @@ defmodule Advent.Day.Two do
  """
  @spec get_answer(part :: number) :: String.t
  def get_answer(part \\ 1)
- def get_answer(1), do: @d2data |> List.replace_at(1, 12) |> List.replace_at(2, 2) |> process_program |> Enum.at(0)
+ def get_answer(1), do: @d2data |> run_gravity_assist(12, 2)
+ def get_answer(2) do
+  stream = Stream.unfold({0,0},
+    fn
+      {n,v} when n > 99 or v > 99 -> nil
+      {n,v} when n > v -> {{n,v}, {n,v+1}}
+      {n,v} -> {{n,v}, {n+1, v}}
+    end
+  )
+  {noun, verb} = Enum.find(stream, fn {noun, verb} -> run_gravity_assist(@d2data, noun, verb) == 19690720 end)
+  100*noun+verb
+ end
+
+ def run_gravity_assist(data, noun, verb) do
+  data
+  |> List.replace_at(1, noun)
+  |> List.replace_at(2, verb)
+  |> process_program
+  |> Enum.at(0)
+ end
 end
