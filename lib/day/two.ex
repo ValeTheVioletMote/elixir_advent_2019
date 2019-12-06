@@ -59,8 +59,8 @@ defmodule Advent.Day.Two do
   stream = Stream.unfold({0,0},
     fn
       {n,v} when n > 99 or v > 99 -> nil
-      {n,v} when n > v -> {{n,v}, {n,v+1}}
-      {n,v} -> {{n,v}, {n+1, v}}
+      {n,v} when v == 99 -> {{n,v}, {n+1, 0}}
+      {n,v} -> {{n,v}, {n, v+1}}
     end
   )
   {noun, verb} = Enum.find(stream, fn {noun, verb} -> run_gravity_assist(@d2data, noun, verb) == 19690720 end)
