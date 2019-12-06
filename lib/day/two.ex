@@ -49,9 +49,9 @@ defmodule Advent.Day.Two do
 
  @doc """
  Determines the answers to the Advent Parts.
-  iex> get_answer(1)
+  iex> Advent.Day.Two.get_answer(1)
   3895705
-  iex> get_answer(2)
+  iex> Advent.Day.Two.get_answer(2)
   6417
  """
  @spec get_answer(part :: number) :: String.t
