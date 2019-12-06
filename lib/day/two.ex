@@ -58,18 +58,27 @@ defmodule Advent.Day.Two do
  def get_answer(part \\ 1)
  def get_answer(1), do: @d2data |> run_gravity_assist(12, 2)
  def get_answer(2) do
-  stream = Stream.unfold({0,0},
-    fn
-      {n,v} when n > 99 or v > 99 -> nil
-      {n,v} when v == 99 -> {{n,v}, {n+1, 0}}
-      {n,v} -> {{n,v}, {n, v+1}}
-    end
-  )
-  {noun, verb} = Enum.find(stream, fn {noun, verb} -> run_gravity_assist(@d2data, noun, verb) == 19690720 end)
-  100*noun+verb
+  with {:ok, {noun, verb}} <- get_partitioned_guess_stream()
+  |> Task.async_stream(&scour_for_answer/1, max_concurrency: System.schedulers_online()*2)
+  |> Enum.find(fn {:ok, v} -> match? {_noun, _verb}, v end),
+  do: 100*noun+verb
  end
 
- def run_gravity_assist(data, noun, verb) do
+ defp scour_for_answer(stream) do
+  Enum.find(stream, fn {noun, verb} -> run_gravity_assist(@d2data, noun, verb) == 19690720 end)
+ end
+
+ defp get_partitioned_guess_stream do
+  0..99
+  |> Enum.map(fn n -> Stream.unfold(0,
+    fn
+      v when v > 99 -> nil
+      v -> {{n,v}, v+1}
+    end
+  ) end)
+ end
+
+ defp run_gravity_assist(data, noun, verb) do
   data
   |> List.replace_at(1, noun)
   |> List.replace_at(2, verb)
